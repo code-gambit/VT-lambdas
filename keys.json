@@ -1,0 +1,6 @@
+{
+    "aws-access-key":"dummy",
+    "aws-secret-key":"dummy",
+    "region":"local",
+    "endpoint":"http://localhost:8000"
+}
