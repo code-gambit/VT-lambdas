@@ -8,8 +8,8 @@ Fixes # (issue)
 
 Please delete options that are not relevant.
 
-- [ ] Update lambda @<name of lambda>
-- [ ] Created new lambda @<name of lambda>
+- [ ] Updated lambda `@<name of the lambda>`
+- [ ] Created new lambda `@<name of the lambda>`
 - [ ] Other
 
 ## Checklist:
