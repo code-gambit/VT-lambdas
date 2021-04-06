@@ -18,18 +18,18 @@ var params = {
     AttributeDefinitions: [       
         { AttributeName: "PK", AttributeType: "S" },
         { AttributeName: "SK", AttributeType: "S" },
-        { AttributeName: "u_id", AttributeType: "S" },
-        { AttributeName: "data", AttributeType: "S"}
+        { AttributeName: "U_ID", AttributeType: "S" },
+        { AttributeName: "LS1_SK", AttributeType: "S"}
     ],
     ProvisionedThroughput: {       
         ReadCapacityUnits: 10, 
         WriteCapacityUnits: 10
     },
     GlobalSecondaryIndexes: [{
-        IndexName: "Find_file",
+        IndexName: "FIND_FILE",
         KeySchema: [
             {
-                AttributeName: "u_id",
+                AttributeName: "U_ID",
                 KeyType: "HASH"
             }
         ],
@@ -42,14 +42,14 @@ var params = {
         }
     }],
     LocalSecondaryIndexes: [{
-        IndexName: "Filter_by_name",
+        IndexName: "FILTER_BY_NAME",
         KeySchema: [
             {
                 AttributeName: "PK",
                 KeyType: "HASH"
                 },
             {
-                AttributeName: "data",
+                AttributeName: "LS1_SK",
                 KeyType: "RANGE"
                 }
         ],
