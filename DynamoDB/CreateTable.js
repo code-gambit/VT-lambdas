@@ -1,10 +1,12 @@
 var AWS = require("aws-sdk");
-var keys = require("../keys.json");
 
+/*Use this for AWS Console*/
+//AWS.config.loadFromPath('../keys.json');
 
+/*Use this for local setup*/
 AWS.config.update({
-  region: keys.region,
-  endpoint: keys.endpoint
+  region: "local",
+  endpoint: "http://localhost:8000"
 });
 
 var dynamodb = new AWS.DynamoDB();
