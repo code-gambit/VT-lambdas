@@ -13,25 +13,25 @@ var dynamodb = new AWS.DynamoDB();
 
 var params = {
     TableName : "V-Transfer",
-    KeySchema: [       
+    KeySchema: [
         { AttributeName: "PK", KeyType: "HASH"},  //Partition key
         { AttributeName: "SK", KeyType: "RANGE" }  //Sort key
     ],
-    AttributeDefinitions: [       
+    AttributeDefinitions: [
         { AttributeName: "PK", AttributeType: "S" },
         { AttributeName: "SK", AttributeType: "S" },
-        { AttributeName: "U_ID", AttributeType: "S" },
+        { AttributeName: "GS1_PK", AttributeType: "S" },
         { AttributeName: "LS1_SK", AttributeType: "S"}
     ],
-    ProvisionedThroughput: {       
-        ReadCapacityUnits: 10, 
+    ProvisionedThroughput: {
+        ReadCapacityUnits: 10,
         WriteCapacityUnits: 10
     },
     GlobalSecondaryIndexes: [{
-        IndexName: "FIND_FILE",
+        IndexName: "FIND_FILE_BY_URL",
         KeySchema: [
             {
-                AttributeName: "U_ID",
+                AttributeName: "GS1_PK",
                 KeyType: "HASH"
             }
         ],
@@ -44,7 +44,7 @@ var params = {
         }
     }],
     LocalSecondaryIndexes: [{
-        IndexName: "FILTER_BY_NAME",
+        IndexName: "FIND_FILE_BY_NAME",
         KeySchema: [
             {
                 AttributeName: "PK",
