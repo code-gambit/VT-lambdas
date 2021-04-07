@@ -1,5 +1,6 @@
-{ 
-    "accessKeyId": "<YOUR_ACCESS_KEY_ID>", 
-    "secretAccessKey": "<YOUR_SECRET_ACCESS_KEY>",
-    "region": "<REGION>" 
+{
+    "accessKeyId": "fakeMyKeyId",
+    "secretAccessKey": "fakeSecretAccessKey",
+    "region": "x",
+    "endpoint": "http://localhost:8000"
 }

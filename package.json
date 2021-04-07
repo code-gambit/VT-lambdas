@@ -1,0 +1,22 @@
+{
+  "name": "vt-lambdas",
+  "version": "1.0.0",
+  "description": "Repository for AWS Lambda scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayush0x00/VT-lambdas.git"
+  },
+  "author": "Ayush Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ayush0x00/VT-lambdas/issues"
+  },
+  "homepage": "https://github.com/ayush0x00/VT-lambdas#readme",
+  "dependencies": {
+    "aws-sdk": "^2.881.0"
+  }
+}
