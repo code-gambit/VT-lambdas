@@ -30,7 +30,7 @@ module.exports.createUser = (event, ctx, callback) => {
     u_name: reqBody.u_name,
     PK: reqBody.u_email,
     SK: `#METADATA#${reqBody.u_email}`,
-    u_age: reqBody.age,
+    u_age: reqBody.u_age,
     u_thumbnail: reqBody.u_thumbnail,
     u_is_verified: true,
     u_provider: reqBody.u_provider,
