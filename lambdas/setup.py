@@ -50,34 +50,60 @@ Available options
     '''
     print(docs)
 
-def ls():
-    c = 0
-    for item in os.listdir('.'):
-        if os.path.isdir(item):
-            if os.path.exists('{}/package.json'.format(item)):
-                c += 1
-                print(item)
-    if c==0:
-        print('No lambdas created yet.')
+def ls(path='.'):
+    for item in os.listdir(path):
+        if not os.path.isdir(f'{path}/{item}') or item == 'out':
+            continue
+        if is_lambda(f'{path}/{item}'):
+            print(item)
+        else:
+            ls(f'{path}/{item}')
 
-def build(scope):
-    any = -1
-    scope = scope.replace('/','')
-    dirs = os.listdir('.')
-    for item in dirs:
-        if os.path.isdir(item) and item != 'out':
-            os.chdir(item)
-            if scope == '.' or item == scope:
-                any = 1
-                os.system('echo \'> Building @{} lambda\''.format(item))
-                os.system('npm start')
-                os.system('echo =============== Done! ===============')
+def is_lambda(path):
+    # return bool if the path is a valid lambda or not
+    path += '/' if path[-1] != '/' else ''
+    return os.path.isdir(path) and os.path.exists(f'{path}package.json') and os.path.exists(f'{path}/index.js')
+
+def check_for_out(path):
+    # checks if path directory comtains the out folder or not
+    print(path)
+    path += '/' if path[-1] != '/' else ''
+    if 'out' not in os.listdir(path):
+        os.mkdir(f'{path}/out')
+
+def build(path, recur=False):
+    #print(path)
+    path += '/' if path[-1] != '/' else ''
+    if path != './' and not recur:
+        if not is_lambda(path):
+            print(f'Invalid!! path. {path} provided is not a valid lambda.')
+        else:
+            os.chdir(path)
             os.chdir('..')
-    if any == -1:
-        if scope == '.':
-            print('No lambda exist')
-            return
-        print('No @{} lambda exist'.format(scope))
+            check_for_out(os.getcwd())
+            os.chdir(path.split('/')[-2])
+            os.system(f'echo \'> Building @{path} lambda\'')
+            name = path.split('/')[-2]
+            os.system(f'zip -r ../out/{name}.zip *')
+            os.system('echo =============== Done! ===============')
+        return
+
+    dirs = os.listdir(path)
+    for item in dirs:
+        curr_path = f'{path}{item}/'
+        if (not os.path.isdir(curr_path)) or item == 'out':
+            continue
+        if is_lambda(curr_path):
+            backup = os.getcwd()
+            check_for_out(path)
+            os.chdir(curr_path)
+            os.system(f'echo \'> Building @{path} lambda\'')
+            os.system(f'zip -r ../out/{item}.zip *')
+            os.system('echo =============== Done! ===============')
+            os.chdir(backup)
+        else:
+            build(curr_path, 1)
+
 
 def is_valid_name(name):
     if name == '':
@@ -109,6 +135,11 @@ elif args[1] == '--init' or args[1] == '-i':
     projectName = input('Lambda Name: ')
     projectDirectory= input('Directory path: ')
     while not os.path.isdir(projectDirectory):
+        print(f'{projectDirectory} doesn\'t exist. Want to creat [Y/y]|[N/n]')
+        response = input()
+        if response in ['Y', 'y']:
+            os.makedirs(f'./{projectDirectory}')
+            continue
         print("Please provide a valid directory ")
         print()
         projectDirectory=input('Directory path: ')
@@ -120,7 +151,7 @@ elif args[1] == '--init' or args[1] == '-i':
     package = package.replace('@@@', description)
     os.chdir(projectDirectory)
     setup(projectName)
-    
+
 elif args[-1] == '--ls' or args[-1] == '-ls':
     ls()
 elif args[-1] == '--help' or args[-1] == '-h':
