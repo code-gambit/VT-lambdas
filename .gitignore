@@ -1,3 +1,4 @@
 node_modules
 keys.json
 package-lock.json
+lambdas/info.txt
