@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/code-gambit/VT-lambdas/issues"
   },
-  "homepage": "https://github.com/code-gambit/VT-lambdas#readme"
+  "homepage": "https://github.com/code-gambit/VT-lambdas#readme",
+  "dependencies": {
+    "aws-sdk": "^2.883.0"
+  }
 }
