@@ -3,7 +3,6 @@
 {
   "PK": "USER#<user email>: String",
   "SK": "METADATA: static String",
-  "name": "<user's name>: String",
   "type": "<user type>: enum String",
   "storage_used": "<storage used by user in KB>: ",
   "thumbnail": "<profile image url>: String"
@@ -25,10 +24,11 @@
 ## Url
 ```json
 {
-  "PK": "<file hash>: String",
+  "PK": "FILE#<YYYY-MM-DD-HH-mm-SS>: String",
   "SK": "URL#YYYY-MM-DD-HH-mm-SS: String",
-  "GS1_PK": "<random url id>: String",
-  "size": "<file size>: Int",
+  "GS1_PK": "<unique url id>: String",
+  "hash": "<file hash>: String",
   "visible": "<is url visitable>: Boolean",
+  "clicks_left": "<no of times url can be used>: Int"
 }
 ```
