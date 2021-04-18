@@ -16,31 +16,34 @@ function response(statusCode, message) {
 }
 
 exports.deleteFile = async (event) => {
-  const reqBody = event.body;
+  const reqBody = JSON.parse(event.body);
   var params = {
     TableName: "V-Transfer",
     Key: {
-      PK: `USER#${reqBody.user_email}`,
-      SK: `#FILE#${reqBody.timestamp}`,
+      PK: `USER#${reqBody.u_email}`,
+      SK: `#FILE#${reqBody.f_timestamp}`,
     },
   };
+
   try{
     await dynamo.delete(params).promise()
 
     await dynamo.update({
-    TableName: "V-Transfer",
-    Key: {
-      PK: `USER#${reqBody.user_email}`,
-      SK: `METADATA`, 
-    },
-    UpdateExpression: "add storage_used :size",
-    ExpressionAttributeValues: {
-      ":size": -reqBody.size,
-    },
-  }).promise()
-  return response(201,"File delete success")
-}
+      TableName: "V-Transfer",
+      Key: {
+        PK: `USER#${reqBody.u_email}`,
+        SK: `METADATA`, 
+      },
+      UpdateExpression: "add storage_used :size",
+      ExpressionAttributeValues: {
+        ":size": -reqBody.f_size,
+      },
+      }).promise()
+    return response(201,"File delete success")
+  }
   catch(err){
     return response(err.statusCode,err.message)
   }
+  
 }
+
