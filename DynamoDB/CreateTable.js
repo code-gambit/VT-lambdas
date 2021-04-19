@@ -1,7 +1,7 @@
 var AWS = require("aws-sdk");
 
 /*Use this for AWS Console*/
-AWS.config.loadFromPath('../keys.json');
+//AWS.config.loadFromPath('../keys.json');
 
 /*Use this for local setup*/
 // AWS.config.update({

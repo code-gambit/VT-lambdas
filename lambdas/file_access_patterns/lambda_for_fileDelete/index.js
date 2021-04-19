@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-const crypto = require("crypto");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 //AWS.config.loadFromPath("../../../keys.json");
 //Use the below code for local setup
@@ -16,27 +15,33 @@ function response(statusCode, message) {
 }
 
 exports.deleteFile = async (event) => {
-  const reqBody = JSON.parse(event.body);
+  const reqBody = event.body;
   var params = {
     TableName: "V-Transfer",
     Key: {
-      PK: `USER#${reqBody.u_email}`,
-      SK: `#FILE#${reqBody.f_timestamp}`,
+      PK: `USER#${event.path.u_id}`,
+      SK: `FILE#${reqBody.f_timestamp}`,
     },
+    ReturnValues: 'ALL_OLD'
   };
 
   try{
-    await dynamo.delete(params).promise()
+    var fileData = await dynamo.delete(params).promise()
+  }
+  catch(err){
+    return response(err.statusCode,err.message)
+  }
 
+  try{
     await dynamo.update({
       TableName: "V-Transfer",
       Key: {
-        PK: `USER#${reqBody.u_email}`,
+        PK: `USER#${event.path.u_id}`,
         SK: `METADATA`, 
       },
       UpdateExpression: "add storage_used :size",
       ExpressionAttributeValues: {
-        ":size": -reqBody.f_size,
+        ":size": -fileData.Attributes.size,
       },
       }).promise()
     return response(201,"File delete success")

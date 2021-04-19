@@ -11,10 +11,11 @@ function response(statusCode, message) {
 }
 
 module.exports.createUser = async (event) => {
-  let reqBody = JSON.parse(event.body);
+  let reqBody = event.body;
   const user = {    
-    PK: `USER#${reqBody.u_email}`,
+    PK: `USER#${event.path.u_id}`,
     SK: `METADATA`,
+    email: reqBody.u_email,
     type: "default",
     storage_used: 0,
     thumbnail: reqBody.u_thumbnail,    

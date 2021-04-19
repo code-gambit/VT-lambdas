@@ -12,16 +12,15 @@ function response(statusCode, message) {
 }
 
 exports.uploadFile = async (event) => {
-  // TODO implement
-  const reqBody = JSON.parse(event.body);
+  const reqBody = event.body;
   var d = new Date();
   const timestamp = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDate() + "-" +
     d.getHours() + "-" + d.getMinutes()+ "-" +d.getSeconds();
 
   const file = {
-    PK: `USER#${reqBody.u_email}`,
-    SK: `#FILE#${timestamp}`,
-    LSI_SK:reqBody.f_name,
+    PK: `USER#${event.path.u_id}`,
+    SK: `FILE#${timestamp}`,
+    LSI_SK: reqBody.f_name,
     size: reqBody.f_size,
     hash: reqBody.f_hash,
     type:reqBody.f_type
@@ -32,11 +31,16 @@ exports.uploadFile = async (event) => {
       TableName:"V-Transfer",
       Item: file
     }).promise()
-
+  }
+  catch(err){
+    return response(err.statusCode,err.message)
+  }
+  
+  try{
     await dynamo.update({
       TableName: "V-Transfer",
       Key: {
-        PK: `USER#${reqBody.u_email}`,
+        PK: `USER#${event.path.u_id}`,
         SK: `METADATA`,  //token is password hash
       },
       UpdateExpression: "add storage_used :file_size",
