@@ -16,6 +16,7 @@ exports.listFiles = async (event) =>{
         const file_data = await dynamo.query({
             TableName:"V-Transfer",
             KeyConditionExpression: "#PK= :pk and begins_with(#SK,:sk)",
+            ScanIndexForward: false,
             ExpressionAttributeNames:{
                 "#PK": "PK",
                 "#SK": "SK"
