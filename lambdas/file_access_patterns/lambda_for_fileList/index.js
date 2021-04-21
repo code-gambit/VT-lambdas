@@ -7,7 +7,7 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 function response(statusCode, message) {
   return {
     statusCode: statusCode,
-    body: JSON.stringify(message),
+    body: message,
   };
 }
 function jsonToBase64(json_data){
@@ -42,8 +42,10 @@ exports.listFiles = async (event) =>{
         }
         if(lastEvaluatedKey !== undefined) params.ExclusiveStartKey = lastEvaluatedKey;
         const file_data = await dynamo.query(params).promise()        
-        file_data.LastEvaluatedKey = jsonToBase64(file_data.LastEvaluatedKey);
-        return response(200,file_data);
+        return_data={} 
+        return_data.items=file_data.Items       
+        file_data.LastEvaluatedKey!=undefined?return_data.LastEvaluatedKey = jsonToBase64(file_data.LastEvaluatedKey):"";
+        return response(200,return_data);
     }
     catch(err){
         return response(err.statusCode,err.message);
