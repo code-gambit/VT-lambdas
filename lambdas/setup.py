@@ -24,10 +24,18 @@ package ='''{
 '''
 index = '''\
 const AWS = require('aws-sdk');
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+function response(statusCode, message) {
+  return {
+    statusCode: statusCode,
+    body: message,
+  };
+}
+
 exports.handler = async (event) => {
     // TODO implement
-    const response = (success, reason, data) => { return { success: success, reason: reason, data: data } }
-    return response(true, null, null);
+    return response(200, event);
 };
 '''
 authors = ['Lakshya Bansal <https://github.com/lakshya-20>',
