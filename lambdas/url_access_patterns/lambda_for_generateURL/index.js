@@ -21,6 +21,7 @@ function generateTimestamp() {
   const ts = Date.now();
   const pattern = DT.compile("YYYY-MM-DD-HH-mm-ss");
   const timestamp = DT.format(new Date(ts), pattern);
+  return timestamp;
 }
 
 exports.generateURL = async (event) => {
@@ -32,7 +33,7 @@ exports.generateURL = async (event) => {
       .put({
         TableName: "V-Transfer",
         Item: {
-          PK: `FILE#${reqBody.f_timestamp}`,
+          PK: `FILE#${event.path.f_timestamp}`,
           SK: `URL#${timestamp}`,
           GS1_PK: `${urlID}`,
           hash: `${reqBody.hash}`,
