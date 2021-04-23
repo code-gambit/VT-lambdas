@@ -8,17 +8,20 @@ function response(statusCode, message) {
     body: JSON.stringify(message),
   };
 }
+function generateTimestamp() {
+  const ts = Date.now();
+  const pattern = DT.compile("YYYY-MM-DD-HH-mm-ss");
+  const timestamp = DT.format(new Date(ts), pattern);
+  return timestamp;
+}
 
 exports.uploadFile = async (event) => {
   const reqBody = event.body;
-  var d = new Date();
-  const timestamp = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDate() + "-" +
-    d.getHours() + "-" + d.getMinutes()+ "-" +d.getSeconds();
-
+  const timestamp = generateTimestamp()
   const file = {
     PK: `USER#${event.path.u_id}`,
     SK: `FILE#${timestamp}`,
-    LSI_SK: reqBody.f_name,
+    LS1_SK: reqBody.f_name,
     size: reqBody.f_size,
     hash: reqBody.f_hash,
     type:reqBody.f_type

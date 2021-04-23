@@ -1,0 +1,24 @@
+{
+    "name": "lambda_for_getHash",
+    "version": "1.0.0",
+    "description": "Lambda function for getting hash corresponding to a URL_ID",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "zip -r ../out/lambda_for_getHash.zip *"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/code-gambit/VT-lambdas"
+    },
+    "author": "Lakshya Bansal <https://github.com/lakshya-20>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/code-gambit/VT-lambdas/issues"
+    },
+    "homepage": "https://github.com/code-gambit/VT-lambdas#readme",
+    "dependencies": {
+        "aws-sdk": "^2.884.0"
+    }
+}
+  
