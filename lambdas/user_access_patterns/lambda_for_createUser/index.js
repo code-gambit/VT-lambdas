@@ -3,22 +3,17 @@ const AWS = require("aws-sdk");
 //AWS.config.loadFromPath("../../../keys.json");
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
-function response(statusCode, message) {
-  return {
-    statusCode: statusCode,
-    body: JSON.stringify(message),
-  };
-}
 
-module.exports.createUser = async (event) => {
-  let reqBody = event.body;
-  const user = {    
-    PK: `USER#${event.path.u_id}`,
+exports.handler = async (event) => {
+  //console.log(event)
+  let userAttr = event.request.userAttributes;
+  const user = {
+    PK: `USER#${userAttr.sub}`,
     SK: `METADATA`,
-    email: reqBody.u_email,
+    email: userAttr.email,
     type: "default",
     storage_used: 0,
-    thumbnail: reqBody.u_thumbnail,    
+    thumbnail: userAttr['custom:profile_image'],
   };
 
   try{
@@ -26,9 +21,8 @@ module.exports.createUser = async (event) => {
       TableName:"V-Transfer",
       Item: user
     }).promise()
-    return response(201,`User created successfully`)
   }
   catch(err){
-    return response(err.statusCode,err.message)
   }
+  return event
 }
