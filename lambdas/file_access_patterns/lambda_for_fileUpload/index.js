@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const DT = require("date-and-time");
 //AWS.config.loadFromPath("../../../keys.json");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
@@ -9,12 +10,17 @@ function response(statusCode, message) {
   };
 }
 
+function generateTimestamp() {
+  const ts = Date.now();
+  const pattern = DT.compile("YYYY-MM-DD-HH-mm-ss");
+  const timestamp = DT.format(new Date(ts), pattern);
+  return timestamp;
+}
+
 exports.uploadFile = async (event) => {
   const reqBody = event.body;
   var d = new Date();
-  const timestamp = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDate() + "-" +
-    d.getHours() + "-" + d.getMinutes()+ "-" +d.getSeconds();
-
+  const timestamp = generateTimestamp();
   const file = {
     PK: `USER#${event.path.u_id}`,
     SK: `FILE#${timestamp}`,
