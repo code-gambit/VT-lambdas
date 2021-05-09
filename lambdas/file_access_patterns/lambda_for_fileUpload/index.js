@@ -6,7 +6,7 @@ const dynamo = new AWS.DynamoDB.DocumentClient();
 function response(statusCode, message) {
   return {
     statusCode: statusCode,
-    body: JSON.stringify(message),
+    body: message,
   };
 }
 
@@ -39,7 +39,7 @@ exports.uploadFile = async (event) => {
   catch(err){
     return response(err.statusCode,err.message)
   }
-  
+
   try{
     await dynamo.update({
       TableName: "V-Transfer",
@@ -52,7 +52,7 @@ exports.uploadFile = async (event) => {
         ":file_size": reqBody.f_size,
       },
     }).promise()
-    return response(201,"File upload success")
+    return response(201, file)
   }
   catch(err){
     return response(err.statusCode,err.message)
