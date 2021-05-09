@@ -22,9 +22,8 @@ function base64ToJson(bString){
 }
   
 exports.listFiles = async (event) =>{
-    try{
-        const reqBody = event.body;
-        const lastEvaluatedKey = base64ToJson(reqBody.LastEvaluatedKey)
+    try{        
+        const lastEvaluatedKey = base64ToJson(event.query.LastEvaluatedKey);
         var params={
             TableName:"V-Transfer",
             ScanIndexForward: false,

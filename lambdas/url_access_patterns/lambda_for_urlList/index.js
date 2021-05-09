@@ -24,7 +24,7 @@ function base64ToJson(bString){
 exports.listUrls = async (event) =>{
     try{
         const reqBody = event.body;
-        const lastEvaluatedKey = base64ToJson(reqBody.LastEvaluatedKey)
+        const lastEvaluatedKey = base64ToJson(event.query.LastEvaluatedKey);
         var params={
             TableName:"V-Transfer",
             ScanIndexForward: false,
