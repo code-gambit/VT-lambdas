@@ -28,6 +28,11 @@ exports.generateURL = async (event) => {
   const urlID = generateUniqueId();
   const reqBody = event.body;
   const timestamp = generateTimestamp();
+  var visible=true    //public
+  if(reqBody.visible==="false"||reqBody.visible===false){      
+    visible=false;    //private
+  }
+  var clicks_left=parseInt(reqBody.clicks_left);
   try {
     await dynamo
       .put({
@@ -37,8 +42,8 @@ exports.generateURL = async (event) => {
           SK: `URL#${timestamp}`,
           GS1_PK: `${urlID}`,
           hash: `${reqBody.hash}`,
-          visible: `${reqBody.visible}`,
-          clicks_left: reqBody.clicks_left ? reqBody.clicks_left : 50,
+          visible: visible,
+          clicks_left: clicks_left ? clicks_left : 50,
         },
       })
       .promise();
