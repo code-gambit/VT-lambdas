@@ -1,0 +1,20 @@
+{
+  "name": "lambda_for_getUser",
+  "version": "1.0.0",
+  "description": "gets the meta data of user form db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "zip -r ../out/###.zip *"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-gambit/VT-lambdas"
+  },
+  "author": "Danish Jamal <https://github.com/danishjamal104>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-gambit/VT-lambdas/issues"
+  },
+  "homepage": "https://github.com/code-gambit/VT-lambdas#readme"
+}
