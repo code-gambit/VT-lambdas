@@ -1,7 +1,4 @@
 const AWS = require("aws-sdk");
-
-//AWS.config.loadFromPath("../../../keys.json");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 function response(statusCode, message) {
@@ -21,9 +18,10 @@ function base64ToJson(bString){
     return decoded;
 }
   
-exports.listFiles = async (event) =>{
+exports.handler = async (event) =>{
     try{        
         const lastEvaluatedKey = base64ToJson(event.query.LastEvaluatedKey);
+        const searchParam = event.query.searchParam;
         var params={
             TableName:"V-Transfer",
             ScanIndexForward: false,
@@ -39,9 +37,20 @@ exports.listFiles = async (event) =>{
             },                        
             Limit:10,
         }
+        if(searchParam&&searchParam!=="undefined"){
+            params.IndexName="FIND_FILE_BY_NAME";
+            params.ExpressionAttributeNames={
+              "#PK": "PK",
+              "#SK": "LS1_SK",
+            }
+            params.ExpressionAttributeValues={
+              ":pk": `USER#${event.path.userId}`,
+              ":sk": searchParam,
+            }
+        }
         if(lastEvaluatedKey !== undefined) params.ExclusiveStartKey = lastEvaluatedKey;
         const file_data = await dynamo.query(params).promise()        
-        return_data={} 
+        var return_data={} 
         return_data.items=file_data.Items       
         file_data.LastEvaluatedKey!=undefined?return_data.LastEvaluatedKey = jsonToBase64(file_data.LastEvaluatedKey):"";
         return response(200,return_data);
