@@ -8,13 +8,13 @@ function response(statusCode, message) {
   };
 }
 
-exports.updateURL = async (event) =>{
+exports.handler = async (event) =>{
     const reqBody = event.body;
     var params = {
         TableName:"V-Transfer",
         Key: {
-            PK: `FILE#${event.path.f_timestamp}`,
-            SK: `URL#${reqBody.u_timestamp}`,
+            PK: `FILE#${event.path.fileId}`,
+            SK: `URL#${event.path.urlId}`,
         },
         ReturnValues:"ALL_NEW"
     }

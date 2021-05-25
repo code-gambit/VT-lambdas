@@ -12,7 +12,7 @@ function response(statusCode, message) {
 }
 function jsonToBase64(json_data){
     if(json_data === undefined) return json_data;
-    let encoded = Buffer.from(JSON.stringify(json_data), 'ascii').toString('base64');    
+    let encoded = Buffer.from(JSON.stringify(json_data), 'ascii').toString('base64');
     return encoded;
 }
 function base64ToJson(bString){
@@ -20,8 +20,8 @@ function base64ToJson(bString){
     let decoded = JSON.parse(Buffer.from(bString, 'base64').toString('ascii'));
     return decoded;
 }
-  
-exports.listUrls = async (event) =>{
+
+exports.handler = async (event) =>{
     try{
         const reqBody = event.body;
         const lastEvaluatedKey = base64ToJson(event.query.LastEvaluatedKey);
@@ -34,15 +34,15 @@ exports.listUrls = async (event) =>{
                 "#SK": "SK"
             },
             ExpressionAttributeValues:{
-                ':pk':`FILE#${event.path.f_timestamp}`,
+                ':pk':`FILE#${event.path.fileId}`,
                 ':sk':"URL#"
-            },                        
+            },
             Limit:10,
         }
         if(lastEvaluatedKey !== undefined) params.ExclusiveStartKey = lastEvaluatedKey;
-        const url_data = await dynamo.query(params).promise()        
-        return_data={} 
-        return_data.items=url_data.Items       
+        const url_data = await dynamo.query(params).promise()
+        return_data={}
+        return_data.items=url_data.Items
         url_data.LastEvaluatedKey!=undefined?return_data.LastEvaluatedKey = jsonToBase64(url_data.LastEvaluatedKey):"";
         return response(200,return_data);
     }

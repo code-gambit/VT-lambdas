@@ -17,12 +17,12 @@ function generateTimestamp() {
   return timestamp;
 }
 
-exports.uploadFile = async (event) => {
+exports.handler = async (event) => {
   const reqBody = event.body;
   var d = new Date();
   const timestamp = generateTimestamp();
   const file = {
-    PK: `USER#${event.path.u_id}`,
+    PK: `USER#${event.path.userId}`,
     SK: `FILE#${timestamp}`,
     LSI_SK: reqBody.f_name,
     size: reqBody.f_size,
@@ -44,8 +44,8 @@ exports.uploadFile = async (event) => {
     await dynamo.update({
       TableName: "V-Transfer",
       Key: {
-        PK: `USER#${event.path.u_id}`,
-        SK: `METADATA`,  //token is password hash
+        PK: `USER#${event.path.userId}`,
+        SK: `METADATA`,
       },
       UpdateExpression: "add storage_used :file_size",
       ExpressionAttributeValues: {
