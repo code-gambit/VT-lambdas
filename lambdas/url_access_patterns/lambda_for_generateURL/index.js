@@ -24,12 +24,12 @@ function generateTimestamp() {
   return timestamp;
 }
 
-exports.generateURL = async (event) => {
+exports.handler = async (event) => {
   const urlID = generateUniqueId();
   const reqBody = event.body;
   const timestamp = generateTimestamp();
   var visible=true    //public
-  if(reqBody.visible==="false"||reqBody.visible===false){      
+  if(reqBody.visible==="false"||reqBody.visible===false){
     visible=false;    //private
   }
   var clicks_left=parseInt(reqBody.clicks_left);
@@ -38,7 +38,7 @@ exports.generateURL = async (event) => {
       .put({
         TableName: "V-Transfer",
         Item: {
-          PK: `FILE#${event.path.f_timestamp}`,
+          PK: `FILE#${event.path.fileId}`,
           SK: `URL#${timestamp}`,
           GS1_PK: `${urlID}`,
           hash: `${reqBody.hash}`,

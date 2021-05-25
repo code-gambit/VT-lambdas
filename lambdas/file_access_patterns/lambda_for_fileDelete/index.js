@@ -14,7 +14,7 @@ function request_item_arr_util(url_record){
     "DeleteRequest" :{
       "Key":{
           "PK": "",
-          "SK":"" 
+          "SK":""
       }
     }
   }
@@ -23,13 +23,12 @@ function request_item_arr_util(url_record){
   request_item_arr.push(temp);
 }
 
-exports.deleteFile = async (event) => {
-  const reqBody = event.body;
+exports.handler = async (event) => {
   var params = {
     TableName: "V-Transfer",
     Key: {
-      PK: `USER#${event.path.u_id}`,
-      SK: `FILE#${reqBody.f_timestamp}`,
+      PK: `USER#${event.path.userId}`,
+      SK: `FILE#${event.path.fileId}`,
     },
     ReturnValues: 'ALL_OLD'
   };
@@ -46,8 +45,8 @@ exports.deleteFile = async (event) => {
     await dynamo.update({
       TableName: "V-Transfer",
       Key: {
-        PK: `USER#${event.path.u_id}`,
-        SK: `METADATA`, 
+        PK: `USER#${event.path.userId}`,
+        SK: `METADATA`,
       },
       UpdateExpression: "add storage_used :size",
       ExpressionAttributeValues: {
@@ -58,7 +57,7 @@ exports.deleteFile = async (event) => {
   catch(err){
     return response(err.statusCode,err.message)
   }
-  
+
   params={
     TableName:"V-Transfer",
     KeyConditionExpression: "#PK= :pk and begins_with(#SK,:sk)",
@@ -67,14 +66,14 @@ exports.deleteFile = async (event) => {
         "#SK": "SK"
     },
     ExpressionAttributeValues:{
-        ':pk':`FILE#${reqBody.f_timestamp}`,
+        ':pk':`FILE#${event.path.fileId}`,
         ':sk':"URL#"
-    },                        
+    },
   }
 
   //getting all URLs corresponding to the deleted file record
   try{
-    var url_data = await dynamo.query(params).promise()        
+    var url_data = await dynamo.query(params).promise()
     url_data=url_data.Items;
     if(url_data.length==0){
       return response(201,"File delete success")
@@ -90,7 +89,7 @@ exports.deleteFile = async (event) => {
       "V-Transfer":request_item_arr
     }
   }
-  
+
   //deleting all URL records corresponding to the deleted file record
   try{
     await dynamo.batchWrite(params).promise()
@@ -101,4 +100,3 @@ exports.deleteFile = async (event) => {
   }
 
 }
-

@@ -11,18 +11,18 @@ function response(statusCode, message) {
   };
 }
 
-exports.getHash = async (event) =>{
+exports.handler = async (event) =>{
     try{
         var params={
             TableName:"V-Transfer",
             IndexName:"FIND_FILE_BY_URLID",
             KeyConditionExpression: "GS1_PK= :pk",
             ExpressionAttributeValues:{
-                ':pk':`${event.path.url_id}`,                
-            },                                    
-        }        
-        var url_data = await dynamo.query(params).promise()  
-        if(url_data.Items[0]==undefined) return response(404,"Provided URL is invalid"); 
+                ':pk':`${event.path.urlId}`,
+            },
+        }
+        var url_data = await dynamo.query(params).promise()
+        if(url_data.Items[0]==undefined) return response(404,"Provided URL is invalid");
         url_data=url_data.Items[0];
         if(url_data.visible===false)return response(403,"Provided URL is not accessible")
         if(url_data.clicks_left<=0)return response(403,"Provided URL is not accessible")
