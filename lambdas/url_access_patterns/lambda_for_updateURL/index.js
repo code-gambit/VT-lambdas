@@ -1,10 +1,11 @@
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();+
 
-function response(statusCode, message) {
+function response(statusCode,error=undefined, message=undefined) {
   return {
     statusCode: statusCode,
     body: message,
+    error:error
   };
 }
 
@@ -28,8 +29,8 @@ exports.handler = async (event) =>{
     }
     try{
         const updated_url_data=  await dynamo.update(params).promise();
-        return response(200,updated_url_data.Attributes);
+        return response(200,message=updated_url_data.Attributes);
     }catch(err){
-        return response(err.statusCode,err.message)
+        return response(500,error="Internal Server Error");;
     }
 }

@@ -3,10 +3,11 @@ const DT = require("date-and-time");
 //AWS.config.loadFromPath("../../../keys.json");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode, message) {
+function response(statusCode,error=undefined, message=undefined) {
   return {
     statusCode: statusCode,
     body: message,
+    error:error
   };
 }
 
@@ -24,10 +25,10 @@ exports.handler = async (event) => {
   const file = {
     PK: `USER#${event.path.userId}`,
     SK: `FILE#${timestamp}`,
-    LSI_SK: reqBody.f_name,
-    size: reqBody.f_size,
-    hash: reqBody.f_hash,
-    type:reqBody.f_type
+    LS1_SK: reqBody.LS1_SK,
+    size: reqBody.size,
+    hash: reqBody.hash,
+    f_type: reqBody.f_type,
   };
 
   try{
@@ -37,7 +38,7 @@ exports.handler = async (event) => {
     }).promise()
   }
   catch(err){
-    return response(err.statusCode,err.message)
+    return response(500,error="Internal Server Error");;
   }
 
   try{
@@ -52,9 +53,9 @@ exports.handler = async (event) => {
         ":file_size": reqBody.f_size,
       },
     }).promise()
-    return response(201, file)
+    return  response(201, message=file)
   }
   catch(err){
-    return response(err.statusCode,err.message)
+    return response(500,error="Internal Server Error");;
   }
 }
