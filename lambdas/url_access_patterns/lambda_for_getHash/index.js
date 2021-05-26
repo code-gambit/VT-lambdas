@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -23,13 +23,13 @@ exports.handler = async (event) =>{
             },
         }
         var url_data = await dynamo.query(params).promise()
-        if(url_data.Items[0]==undefined) return response(404,error="Provided URL is invalid");
+        if(url_data.Items[0]==undefined) return response(404,"Provided URL is invalid",undefined);
         url_data=url_data.Items[0];
-        if(url_data.visible===false)return response(403,error="Provided URL is not accessible")
-        if(url_data.clicks_left<=0)return response(403,error="Provided URL is not accessible")
+        if(url_data.visible===false)return response(403,"Provided URL is not accessible",undefined)
+        if(url_data.clicks_left<=0)return response(403,"Provided URL is not accessible",undefined)
     }
     catch(err){
-        return response(500,error="Internal Server Error");;
+        return response(500,"Internal Server Error",undefined);;
     }
     try{
         await dynamo.update({
@@ -43,9 +43,9 @@ exports.handler = async (event) =>{
                 ":val": -1
             }
         }).promise();
-        return  response(200,message=url_data.hash);
+        return  response(200,undefined,url_data.hash);
     }
     catch(err){
-        return response(500,error="Internal Server Error");;
+        return response(500,"Internal Server Error",undefined);;
     }
 }

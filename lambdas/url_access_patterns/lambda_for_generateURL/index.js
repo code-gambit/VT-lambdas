@@ -10,7 +10,7 @@ function generateUniqueId() {
   const id = uniqueId.encode(Math.ceil(Math.random() * 1000));
   return id;
 }
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -48,8 +48,8 @@ exports.handler = async (event) => {
         },
       })
       .promise();
-    return response(200, message=urlID);
+    return response(200, undefined,urlID);
   } catch (err) {
-    return response(500,error="Internal Server Error");
+    return response(500,"Internal Server Error",undefined);
   }
 };

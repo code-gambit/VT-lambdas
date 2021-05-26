@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -19,9 +19,9 @@ exports.handler = async (event) =>{
             }
         }
         await dynamo.delete(params).promise();
-        return  response(201,message="URL delete success");
+        return  response(201,undefined,"URL delete success");
     }
     catch(err){
-        return response(500,error="Internal Server Error");;
+        return response(500,"Internal Server Error",undefined);;
     }
 }

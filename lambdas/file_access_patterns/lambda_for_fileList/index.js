@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -54,10 +54,10 @@ exports.handler = async (event) =>{
         var return_data={}
         return_data.items=file_data.Items
         file_data.LastEvaluatedKey!=undefined?return_data.LastEvaluatedKey = jsonToBase64(file_data.LastEvaluatedKey):"";
-        return  response(200,message=return_data);
+        return  response(200,undefined,return_data);
     }
     catch(err){
-        return response(500,error="Internal Server Error");;
+        return response(500,"Internal Server Error",undefined);;
     }
 
 }
