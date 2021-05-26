@@ -14,7 +14,7 @@ function jsonToBase64(json_data){
     return encoded;
 }
 function base64ToJson(bString){
-    if (bString === undefined) return bString
+    if (bString === undefined || bString === "undefined" || bString === "null" || bString === "") return undefined
     let decoded = JSON.parse(Buffer.from(bString, 'base64').toString('ascii'));
     return decoded;
 }
@@ -38,7 +38,7 @@ exports.handler = async (event) =>{
             },
             Limit:10,
         }
-        if(searchParam&&searchParam!=="undefined"){
+        if(searchParam && searchParam!=="undefined" && searchParam!=="null" && searchParam!==""){
             params.IndexName="FIND_FILE_BY_NAME";
             params.ExpressionAttributeNames={
               "#PK": "PK",
