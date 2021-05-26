@@ -1,5 +1,5 @@
 const AWS = require("aws-sdk");
-const dynamo = new AWS.DynamoDB.DocumentClient();+
+const dynamo = new AWS.DynamoDB.DocumentClient();
 
 function response(statusCode,error, message) {
   return {
@@ -31,6 +31,6 @@ exports.handler = async (event) =>{
         const updated_url_data=  await dynamo.update(params).promise();
         return response(200,undefined,updated_url_data.Attributes);
     }catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 }

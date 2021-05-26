@@ -30,7 +30,7 @@ exports.handler = async (event) =>{
         var file_data = await dynamo.query(params).promise()
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 
     try{
@@ -57,6 +57,6 @@ exports.handler = async (event) =>{
         return  response(200,undefined,return_data);
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 }

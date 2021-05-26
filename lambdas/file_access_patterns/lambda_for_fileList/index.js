@@ -57,7 +57,7 @@ exports.handler = async (event) =>{
         return  response(200,undefined,return_data);
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 
 }

@@ -94,7 +94,7 @@ exports.handler = async (event) => {
   //deleting all URL records corresponding to the deleted file record
   try{
     await dynamo.batchWrite(params).promise()
-    return return response(201,undefined,"File delete success")
+    return  response(201,undefined,"File delete success")
   }
   catch(err){
     return response(500,"Internal Server Error",undefined);

@@ -29,7 +29,7 @@ exports.handler = async (event) =>{
         if(url_data.clicks_left<=0)return response(403,"Provided URL is not accessible",undefined)
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
     try{
         await dynamo.update({
@@ -46,6 +46,6 @@ exports.handler = async (event) =>{
         return  response(200,undefined,url_data.hash);
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 }

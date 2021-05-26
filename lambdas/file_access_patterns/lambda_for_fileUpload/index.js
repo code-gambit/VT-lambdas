@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     }).promise()
   }
   catch(err){
-    return response(500,"Internal Server Error",undefined);;
+    return response(500,"Internal Server Error",undefined);
   }
 
   try{
@@ -50,12 +50,12 @@ exports.handler = async (event) => {
       },
       UpdateExpression: "add storage_used :file_size",
       ExpressionAttributeValues: {
-        ":file_size": reqBody.f_size,
+        ":file_size": reqBody.size,
       },
     }).promise()
     return  response(201, undefined,file)
   }
   catch(err){
-    return response(500,"Internal Server Error",undefined);;
+    return response(500,"Internal Server Error",undefined);
   }
 }

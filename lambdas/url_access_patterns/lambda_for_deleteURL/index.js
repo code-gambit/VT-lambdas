@@ -22,6 +22,6 @@ exports.handler = async (event) =>{
         return  response(201,undefined,"URL delete success");
     }
     catch(err){
-        return response(500,"Internal Server Error",undefined);;
+        return response(500,"Internal Server Error",undefined);
     }
 }
