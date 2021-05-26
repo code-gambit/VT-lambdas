@@ -29,7 +29,7 @@ exports.handler = async (event) =>{
     }
     try{
         const updated_url_data=  await dynamo.update(params).promise();
-        return response(200,undefined,updated_url_data.Attributes);
+        return response(201,undefined,updated_url_data.Attributes);
     }catch(err){
         return response(500,"Internal Server Error",undefined);
     }

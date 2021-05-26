@@ -48,7 +48,7 @@ exports.handler = async (event) => {
         },
       })
       .promise();
-    return response(200, undefined,urlID);
+    return response(201, undefined,urlID);
   } catch (err) {
     return response(500,"Internal Server Error",undefined);
   }
