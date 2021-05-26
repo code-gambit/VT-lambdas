@@ -33,22 +33,22 @@ exports.handler = async (event) => {
   if(reqBody.visible==="false"||reqBody.visible===false){
     visible=false;    //private
   }
-  var clicks_left=parseInt(reqBody.clicks_left);
+  const clicks_left=parseInt(reqBody.clicks_left);
+  const url = {
+    PK: `FILE#${event.path.fileId}`,
+    SK: `URL#${timestamp}`,
+    GS1_PK: `${urlID}`,
+    hash: `${reqBody.hash}`,
+    visible: visible,
+    clicks_left: clicks_left ? clicks_left : 50,
+  }
+  const params = {
+    TableName: "V-Transfer",
+    Item: url,
+  }
   try {
-    await dynamo
-      .put({
-        TableName: "V-Transfer",
-        Item: {
-          PK: `FILE#${event.path.fileId}`,
-          SK: `URL#${timestamp}`,
-          GS1_PK: `${urlID}`,
-          hash: `${reqBody.hash}`,
-          visible: visible,
-          clicks_left: clicks_left ? clicks_left : 50,
-        },
-      })
-      .promise();
-    return response(200, undefined,urlID);
+    await dynamo.put(params).promise();
+    return response(201, undefined, url);
   } catch (err) {
     return response(500,"Internal Server Error",undefined);
   }
