@@ -1,14 +1,15 @@
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode, message) {
-    return {
-      statusCode: statusCode,
-      body: message,
-    };
+function response(statusCode,error=undefined, message=undefined) {
+  return {
+    statusCode: statusCode,
+    body: message,
+    error:error
+  };
 }
 
-exports.handler = async (event) =>{        
+exports.handler = async (event) =>{
     try{
         var params={
             TableName: 'V-Transfer',
@@ -17,10 +18,10 @@ exports.handler = async (event) =>{
                 SK: `URL#${event.path.urlId}`
             }
         }
-        await dynamo.delete(params).promise();        
-        return response(201,"URL delete success");
+        await dynamo.delete(params).promise();
+        return  response(201,message="URL delete success");
     }
     catch(err){
-        return response(err.statusCode, err.message);
+        return response(500,error="Internal Server Error");;
     }
 }
