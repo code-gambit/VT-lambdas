@@ -19,7 +19,7 @@ exports.handler = async (event) =>{
             }
         }
         await dynamo.delete(params).promise();
-        return  response(201,undefined,"URL delete success");
+        return  response(200,undefined,"URL delete success");
     }
     catch(err){
         return response(500,"Internal Server Error",undefined);
