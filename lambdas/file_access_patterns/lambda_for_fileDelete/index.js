@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 //AWS.config.loadFromPath("../../../keys.json");
 
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     var fileData = await dynamo.delete(params).promise()
   }
   catch(err){
-    return response(500,error="Internal Server Error");
+    return response(500,"Internal Server Error",undefined);
   }
 
   //updating the storage_used for the user who deleted the file
@@ -56,7 +56,7 @@ exports.handler = async (event) => {
     }).promise()
   }
   catch(err){
-    return response(500,error="Internal Server Error");
+    return response(500,"Internal Server Error",undefined);
   }
 
   params={
@@ -77,11 +77,11 @@ exports.handler = async (event) => {
     var url_data = await dynamo.query(params).promise()
     url_data=url_data.Items;
     if(url_data.length==0){
-      return response(201,message="File delete success")
+      return response(201,undefined,"File delete success")
     }
   }
   catch(err){
-    return response(500,error="Internal Server Error");
+    return response(500,"Internal Server Error",undefined);
   }
 
   url_data.forEach(request_item_arr_util)
@@ -94,10 +94,10 @@ exports.handler = async (event) => {
   //deleting all URL records corresponding to the deleted file record
   try{
     await dynamo.batchWrite(params).promise()
-    return return response(201,message="File delete success")
+    return  response(201,undefined,"File delete success")
   }
   catch(err){
-    return response(500,error="Internal Server Error");
+    return response(500,"Internal Server Error",undefined);
   }
 
 }

@@ -3,7 +3,7 @@ const DT = require("date-and-time");
 //AWS.config.loadFromPath("../../../keys.json");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode,error=undefined, message=undefined) {
+function response(statusCode,error, message) {
   return {
     statusCode: statusCode,
     body: message,
@@ -38,7 +38,7 @@ exports.handler = async (event) => {
     }).promise()
   }
   catch(err){
-    return response(500,error="Internal Server Error");;
+    return response(500,"Internal Server Error",undefined);
   }
 
   try{
@@ -50,12 +50,12 @@ exports.handler = async (event) => {
       },
       UpdateExpression: "add storage_used :file_size",
       ExpressionAttributeValues: {
-        ":file_size": reqBody.f_size,
+        ":file_size": reqBody.size,
       },
     }).promise()
-    return  response(201, message=file)
+    return  response(201, undefined,file)
   }
   catch(err){
-    return response(500,error="Internal Server Error");;
+    return response(500,"Internal Server Error",undefined);
   }
 }
