@@ -46,6 +46,10 @@ exports.handler = async (event) => {
     TableName: "V-Transfer",
     Item: url,
   }
+  // if event.method is 'INVOKE' then dynamo call is not made and params is returned
+  if(event.method == 'INVOKE') {
+    return params
+  }
   try {
     await dynamo.put(params).promise();
     return response(201, undefined, url);
