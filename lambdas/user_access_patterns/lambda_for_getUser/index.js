@@ -9,10 +9,7 @@ function response(statusCode,error, message) {
   };
 }
 
-
-
 exports.handler = async (event) => {
-    // TODO implement
     const params = {
         TableName: 'V-Transfer',
         Key: {

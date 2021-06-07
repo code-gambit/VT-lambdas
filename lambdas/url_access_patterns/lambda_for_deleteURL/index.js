@@ -16,10 +16,11 @@ exports.handler = async (event) =>{
             Key:{
                 PK: `FILE#${event.path.fileId}`,
                 SK: `URL#${event.path.urlId}`
-            }
+            },
+            ReturnValues:"ALL_OLD"
         }
-        await dynamo.delete(params).promise();
-        return  response(200,undefined,"URL delete success");
+        const res=await dynamo.delete(params).promise();
+        return  response(200,undefined,res.Attributes);
     }
     catch(err){
         return response(500,"Internal Server Error",undefined);

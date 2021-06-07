@@ -1,7 +1,5 @@
 const AWS = require("aws-sdk");
 
-//AWS.config.loadFromPath("../../../keys.json");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 function response(statusCode,error, message) {
@@ -38,7 +36,7 @@ exports.handler = async (event) =>{
                 ':pk':`FILE#${event.path.fileId}`,
                 ':sk':"URL#"
             },
-            Limit:10,
+            Limit:process.env.LIMIT,
         }
         if(lastEvaluatedKey !== undefined) params.ExclusiveStartKey = lastEvaluatedKey;
         const url_data = await dynamo.query(params).promise()

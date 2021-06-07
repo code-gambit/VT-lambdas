@@ -1,6 +1,21 @@
 # VT-lambdas
 
-Repository for AWS Lambda scripts
+## Lambda description
+- Lambda for File Access Patterns
+  - `lambda_for_fileDelete` This lambda takes the userId and fileId and deletes the corresponding file, update the storage_used for the user with the given userId and delete all the corresponding URLs for the deleted file.
+  - `lambda_for_fileDetails` This lambda takes the userId and fileId and returns the file details corresponding to the given fileId.
+  - `lambda_for_fileList`  This lambda returns the file uploaded by a specific user. It supports pagination, text-based search and time-series query.
+  - `lambda_for_fileUpload` This lambda takes the userId and file object and inserts the file object into Dynamodb.
+
+- Lambda for URL Access patterns
+    - `lambda_for_deleteURL` This lambda takes the fileId and urlId and deletes the URL corresponding to the given urlId.
+    - `lambda_for_generateURL` This lambda takes fileId and URL object and generate a new URL corresponding to the given fileId.
+    - `lambda_for_updateURL` This lambda takes the fileld, urlId and URL object and update the URL corresponding to the given urlId.
+    - `lambda_for_urlList` This lambda takes the fileId and return list of URLs corresponding to the given the fileId.
+
+ - Lambda for User Access patterns
+    - `lambda_for_getUser` This lambda takes the userId and return the user record corresponding to the given userId.
+    - `lambda_for_createUser` This lambda accepts the parameters from AWS Cognito and create a record for the user in the DynamoDb
 
 ## How to use setup.py for managing lambdas
 

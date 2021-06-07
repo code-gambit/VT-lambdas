@@ -6,7 +6,6 @@
   "email": "<user email>: String",
   "type": "<user type>: enum String",
   "storage_used": "<storage used by user in KB>: ",
-  "thumbnail": "<profile image url>: String"
 }
 ```
 
@@ -18,7 +17,8 @@
   "LS1_SK": "<file name>: String",
   "hash": "<file hash>: String",
   "size": "<file size>: Int",
-  "type": "<file type>: String"
+  "f_type": "<file type>: String",
+  "default": "<unique url id>: String"
 }
 ```
 

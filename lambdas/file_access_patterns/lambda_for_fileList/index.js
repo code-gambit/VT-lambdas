@@ -82,7 +82,7 @@ exports.handler = async (event) =>{
             ScanIndexForward: false,
             ExpressionAttributeNames:{ "#PK": "PK", "#SK": "SK" },
             ExpressionAttributeValues:{ ':pk':`USER#${event.path.userId}` },
-            Limit:10,
+            Limit:process.env.LIMIT,
         }
         const searchParam = event.query.searchParam;
         var isSearchQuery = isValidString(searchParam)

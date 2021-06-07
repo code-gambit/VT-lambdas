@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 const Lambda = new AWS.Lambda()
 const DT = require("date-and-time");
-//AWS.config.loadFromPath("../../../keys.json");
+
 const dynamo = new AWS.DynamoDB.DocumentClient();
 const error_message = 'Internal Server Error';
 function response(statusCode,error, message) {

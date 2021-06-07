@@ -1,11 +1,8 @@
 const AWS = require("aws-sdk");
 
-//AWS.config.loadFromPath("../../../keys.json");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
-  //console.log(event)
   let userAttr = event.request.userAttributes;
   const user = {
     PK: `USER#${userAttr.sub}`,
@@ -13,7 +10,6 @@ exports.handler = async (event) => {
     email: userAttr.email,
     type: "default",
     storage_used: 0,
-    thumbnail: userAttr['custom:profile_image'],
   };
 
   try{

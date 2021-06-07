@@ -1,7 +1,5 @@
 const AWS = require("aws-sdk");
 
-//AWS.config.loadFromPath("../../../keys.json");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 function response(statusCode,error, message) {

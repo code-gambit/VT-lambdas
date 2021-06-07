@@ -26,20 +26,20 @@ index = '''\
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-function response(statusCode, message) {
+function response(statusCode, error, message) {
   return {
     statusCode: statusCode,
     body: message,
+    error: error
   };
 }
 
 exports.handler = async (event) => {
     // TODO implement
-    return response(200, event);
+    return response(statusCode, error, message);
 };
 '''
 authors = ['Lakshya Bansal <https://github.com/lakshya-20>',
-'Chhavi Tuteja <https://github.com/chhavituteja>',
 'Ayush Tiwari <https://github.com/ayush0x00>',
 'Danish Jamal <https://github.com/danishjamal104>'
 ]
@@ -73,19 +73,19 @@ def ls(path='.'):
             ls(f'{path}/{item}')
 
 def is_lambda(path):
-    # return bool if the path is a valid lambda or not
+
     path += '/' if path[-1] != '/' else ''
     return os.path.isdir(path) and os.path.exists(f'{path}package.json') and os.path.exists(f'{path}/index.js')
 
 def check_for_out(path):
-    # checks if path directory comtains the out folder or not
+
     print(path)
     path += '/' if path[-1] != '/' else ''
     if 'out' not in os.listdir(path):
         os.mkdir(f'{path}/out')
 
 def build(path, recur=False):
-    #print(path)
+
     path += '/' if path[-1] != '/' else ''
     if path != './' and not recur:
         if not is_lambda(path):
@@ -157,7 +157,7 @@ def update_default_author(author):
 
 def author_prompt():
     default = ['']*4
-    cd = get_default_author() # current default author
+    cd = get_default_author()
     default[cd] = '[default]'
     options = '''\
 
