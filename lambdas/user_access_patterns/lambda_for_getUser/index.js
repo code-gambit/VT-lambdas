@@ -1,3 +1,9 @@
+/**
+* This lambda takes the userId and return the user record corresponding to 
+* the given userId.
+* @listens API Gateway: GET /user/:userId
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

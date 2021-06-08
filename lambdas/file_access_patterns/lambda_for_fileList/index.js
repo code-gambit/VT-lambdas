@@ -1,3 +1,9 @@
+/**
+* This lambda returns the file uploaded by a specific user. 
+* It supports pagination, text-based search and time-series query.
+* @listens API Gateway: GET /user/:userId/file
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

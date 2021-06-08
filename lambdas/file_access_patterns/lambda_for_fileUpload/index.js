@@ -1,3 +1,9 @@
+/**
+* This lambda takes the userId and file object and inserts the file 
+* object into Dynamodb.
+* @listens API Gateway: POST /user/:userId/file
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const Lambda = new AWS.Lambda()
 const DT = require("date-and-time");

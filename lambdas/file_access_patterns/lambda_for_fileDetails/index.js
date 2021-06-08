@@ -1,3 +1,9 @@
+/**
+* This lambda takes the userId and fileId and returns the file details 
+* corresponding to the given fileId.
+* @listens API Gateway: GET /user/:userId/file/:fileId
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

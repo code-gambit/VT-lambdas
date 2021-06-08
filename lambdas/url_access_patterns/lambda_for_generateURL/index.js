@@ -1,3 +1,9 @@
+/**
+* This lambda takes fileId and URL object and generate a new URL corresponding 
+* to the given fileId.
+* @listens API Gateway: POST /file/:fileId/url
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const DT = require("date-and-time");
 const crypto = require("crypto");

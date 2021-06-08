@@ -1,5 +1,9 @@
+/**
+* This lambda accepts the parameters from AWS Cognito and create a record 
+* for the user in *the DynamoDb
+* @listens AWS Cognito: Runs after post-confirmation
+*/
 const AWS = require("aws-sdk");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {

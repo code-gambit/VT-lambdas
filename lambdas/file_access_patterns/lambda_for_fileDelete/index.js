@@ -1,3 +1,10 @@
+/**
+* This lambda takes the userId and fileId and deletes the corresponding file, 
+* updating the storage_used for the user with the given userId and delete all 
+* the corresponding URLs for the deleted file.
+* @listens API Gateway: DELETE /user/:userId/file/:fileId
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

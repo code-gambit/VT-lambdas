@@ -1,5 +1,10 @@
+/**
+* This lambda takes the fileId and return list of URLs corresponding 
+* to the given the fileId.
+* @listens API Gateway: GET /file/:fileId/url
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
-
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 function response(statusCode,error, message) {

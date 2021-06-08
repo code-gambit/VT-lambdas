@@ -1,3 +1,9 @@
+/**
+* This lambda takes the fileId and urlId and deletes the URL corresponding 
+* to the given urlId.
+* @listens API Gateway: DELETE /file/:fileId/url/:urlId
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

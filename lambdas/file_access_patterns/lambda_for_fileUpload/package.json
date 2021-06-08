@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/code-gambit/VT-lambdas#readme",
   "dependencies": {
-    "aws-sdk": "^2.884.0",
     "date-and-time": "^1.0.0"
   }
 }

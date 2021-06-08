@@ -1,3 +1,9 @@
+/**
+* This lambda takes the fileld, urlId and URL object and update the URL 
+* corresponding to the given urlId.
+* @listens API Gateway: PUT /file/:fileId/url/:urlId
+* @see {@link https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0}
+*/
 const AWS = require("aws-sdk");
 const dynamo = new AWS.DynamoDB.DocumentClient();
 

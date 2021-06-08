@@ -71,4 +71,4 @@ Serverless is an open source project that allows creation, deployment and testin
 
 ## Swagger API documentation
 
-https://app.swaggerhub.com/apis/code-gambit/V-Transfer/1.0.0
+https://app.swaggerhub.com/apis-docs/code-gambit/V-Transfer/1.0.0
