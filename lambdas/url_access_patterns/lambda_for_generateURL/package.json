@@ -1,0 +1,24 @@
+{
+  "name": "lambda_for_generateURL",
+  "version": "1.0.0",
+  "description": "Lambdas for url access patterns",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "zip -r ../out/###.zip *"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-gambit/VT-lambdas"
+  },
+  "author": "Ayush Tiwari <https://github.com/ayush0x00>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/code-gambit/VT-lambdas/issues"
+  },
+  "homepage": "https://github.com/code-gambit/VT-lambdas#readme",
+  "dependencies": {
+    "date-and-time": "^1.0.0",
+    "hashids": "^2.2.8"
+  }
+}

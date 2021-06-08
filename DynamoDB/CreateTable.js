@@ -4,10 +4,10 @@ var AWS = require("aws-sdk");
 //AWS.config.loadFromPath('../keys.json');
 
 /*Use this for local setup*/
-AWS.config.update({
-  region: "local",
-  endpoint: "http://localhost:8000"
-});
+// AWS.config.update({
+//   region: "local",
+//   endpoint: "http://localhost:8000"
+// });
 
 var dynamodb = new AWS.DynamoDB();
 
@@ -28,7 +28,7 @@ var params = {
         WriteCapacityUnits: 10
     },
     GlobalSecondaryIndexes: [{
-        IndexName: "FIND_FILE_BY_URL",
+        IndexName: "FIND_FILE_BY_URLID",
         KeySchema: [
             {
                 AttributeName: "GS1_PK",

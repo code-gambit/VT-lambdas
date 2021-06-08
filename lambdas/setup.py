@@ -2,9 +2,9 @@ import os
 import sys
 
 package ='''{
-  "name": "###",
+  "name": "__NAME__",
   "version": "1.0.0",
-  "description": "@@@",
+  "description": "__DESCRIPTION__",
   "main": "index.js",
   "scripts": {
     "test": "echo \\"Error: no test specified\\" && exit 1",
@@ -14,7 +14,7 @@ package ='''{
     "type": "git",
     "url": "git+https://github.com/code-gambit/VT-lambdas"
   },
-  "author": "Lakshya Bansal <https://github.com/lakshya-20>",
+  "author": "__AUTHOR__",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/code-gambit/VT-lambdas/issues"
@@ -24,12 +24,25 @@ package ='''{
 '''
 index = '''\
 const AWS = require('aws-sdk');
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+function response(statusCode, error, message) {
+  return {
+    statusCode: statusCode,
+    body: message,
+    error: error
+  };
+}
+
 exports.handler = async (event) => {
     // TODO implement
-    const response = (success, reason, data) => { return { success: success, reason: reason, data: data } }
-    return response(true, null, null);
+    return response(statusCode, error, message);
 };
 '''
+authors = ['Lakshya Bansal <https://github.com/lakshya-20>',
+'Ayush Tiwari <https://github.com/ayush0x00>',
+'Danish Jamal <https://github.com/danishjamal104>'
+]
 
 def help():
     docs = '''\
@@ -50,40 +63,66 @@ Available options
     '''
     print(docs)
 
-def ls():
-    c = 0
-    for item in os.listdir('.'):
-        if os.path.isdir(item):
-            if os.path.exists('{}/package.json'.format(item)):
-                c += 1
-                print(item)
-    if c==0:
-        print('No lambdas created yet.')
+def ls(path='.'):
+    for item in os.listdir(path):
+        if not os.path.isdir(f'{path}/{item}') or item == 'out':
+            continue
+        if is_lambda(f'{path}/{item}'):
+            print(item)
+        else:
+            ls(f'{path}/{item}')
 
-def build(scope):
-    any = -1
-    scope = scope.replace('/','')
-    dirs = os.listdir('.')
-    for item in dirs:
-        if os.path.isdir(item) and item != 'out':
-            os.chdir(item)
-            if scope == '.' or item == scope:
-                any = 1
-                os.system('echo \'> Building @{} lambda\''.format(item))
-                os.system('npm start')
-                os.system('echo =============== Done! ===============')
+def is_lambda(path):
+
+    path += '/' if path[-1] != '/' else ''
+    return os.path.isdir(path) and os.path.exists(f'{path}package.json') and os.path.exists(f'{path}/index.js')
+
+def check_for_out(path):
+
+    print(path)
+    path += '/' if path[-1] != '/' else ''
+    if 'out' not in os.listdir(path):
+        os.mkdir(f'{path}/out')
+
+def build(path, recur=False):
+
+    path += '/' if path[-1] != '/' else ''
+    if path != './' and not recur:
+        if not is_lambda(path):
+            print(f'Invalid!! path. {path} provided is not a valid lambda.')
+        else:
+            os.chdir(path)
             os.chdir('..')
-    if any == -1:
-        if scope == '.':
-            print('No lambda exist')
-            return
-        print('No @{} lambda exist'.format(scope))
+            check_for_out(os.getcwd())
+            os.chdir(path.split('/')[-2])
+            os.system(f'echo \'> Building @{path} lambda\'')
+            name = path.split('/')[-2]
+            os.system(f'zip -r ../out/{name}.zip *')
+            os.system('echo =============== Done! ===============')
+        return
 
-def is_valid_name(name):
+    dirs = os.listdir(path)
+    for item in dirs:
+        curr_path = f'{path}{item}/'
+        if (not os.path.isdir(curr_path)) or item == 'out':
+            continue
+        if is_lambda(curr_path):
+            backup = os.getcwd()
+            check_for_out(path)
+            os.chdir(curr_path)
+            os.system(f'echo \'> Building @{path} lambda\'')
+            os.system(f'zip -r ../out/{item}.zip *')
+            os.system('echo =============== Done! ===============')
+            os.chdir(backup)
+        else:
+            build(curr_path, 1)
+
+
+def is_valid_name(path, name):
     if name == '':
         print('Project name can\'t be empty')
         return False
-    for d in os.listdir('.'):
+    for d in os.listdir(path):
         if os.path.isdir(d) and d == name:
             print('@{} lambda already exist'.format(projectName))
             return False
@@ -100,6 +139,54 @@ def setup(projectName):
     print(package)
     print('=============== Done! ===============')
 
+def get_default_author():
+    try:
+        f = open('info.txt', 'r')
+        return int(f.read().strip())
+    except:
+        f = open('info.txt', 'w')
+        f.write('2')
+        f.close()
+        return 2
+
+def update_default_author(author):
+    print('update author')
+    author = str(author)
+    with open('info.txt', 'w') as f:
+        f.write(author)
+
+def author_prompt():
+    default = ['']*4
+    cd = get_default_author()
+    default[cd] = '[default]'
+    options = '''\
+
+\t\t\tAuthors\t\t\t
+----------------------------------------------------------
+  1 | {} {}
+----------------------------------------------------------
+  2 | {} {}
+----------------------------------------------------------
+  3 | {} {}
+----------------------------------------------------------
+  4 | {} {}
+----------------------------------------------------------
+
+Enter 1/2/3/4 to choose above option or press enter to go with default
+
+    '''.format(authors[0],default[0],
+    authors[1],default[1],
+    authors[2],default[2],
+    authors[3],default[3])
+    print(options)
+    inp = input('Select author[1/2/3/4]: ').strip()
+    while inp not in [str(i) for i in range(1,5)]+['']:
+        print('Invalid input!! Enter values among 1, 2, 3, 4 for respective options')
+        inp = input('Select author[1/2/3/4]: ').strip()
+    inp = cd if inp == '' else int(inp)-1
+    if inp != cd:
+        update_default_author(inp)
+    return authors[inp]
 
 args = sys.argv
 if args[1] == '--build' or args[1] == '-b':
@@ -107,20 +194,29 @@ if args[1] == '--build' or args[1] == '-b':
     pass
 elif args[1] == '--init' or args[1] == '-i':
     projectName = input('Lambda Name: ')
-    projectDirectory= input('Directory path: ')
+    projectDirectory= input('Directory path[default: ./]: ').strip()
+    if projectDirectory in ['','/']:
+        projectDirectory = './'
     while not os.path.isdir(projectDirectory):
+        print(f'{projectDirectory} doesn\'t exist. Want to create it [Y/y]|[N/n]')
+        response = input()
+        if response in ['Y', 'y']:
+            os.makedirs(f'./{projectDirectory}')
+            continue
         print("Please provide a valid directory ")
         print()
         projectDirectory=input('Directory path: ')
-    while not is_valid_name(projectName):
-        projectName = input('Project Name: ')
+    while not is_valid_name(projectDirectory, projectName):
+        projectName = input('Lambda Name: ')
     description = input('Description [Lambda function]: ')
     description = 'Lambda function' if description == '' else description
-    package = package.replace('###', projectName)
-    package = package.replace('@@@', description)
+    author = author_prompt()
+    package = package.replace('__NAME__', projectName)
+    package = package.replace('__DESCRIPTION__', description)
+    package = package.replace('__AUTHOR__', author)
     os.chdir(projectDirectory)
     setup(projectName)
-    
+
 elif args[-1] == '--ls' or args[-1] == '-ls':
     ls()
 elif args[-1] == '--help' or args[-1] == '-h':
